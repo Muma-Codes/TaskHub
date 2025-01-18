@@ -26,7 +26,7 @@ CORS(
         r"/*": {
             "origins":
             ["http://localhost:4000"],  #Should match your frontend URL
-            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"],
             "expose_headers": ["Authorization"],
             "supports_credentials": True
@@ -39,7 +39,7 @@ api=Api(app)
 
 
 # Local development configuration
-app.config['SESSION_COOKIE_SECURE'] = False  # Set to True on production
+app.config['SESSION_COOKIE_SECURE'] = True  # Set to True on production
 app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # CSRF protection
 
