@@ -24,8 +24,7 @@ CORS(
     app,
     resources={
         r"/*": {
-            "origins":
-            ["http://localhost:4000"],  #Should match your frontend URL
+            "origins": ["https://taskhub-gwdw.onrender.com"],  #Should match your frontend URL
             "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"],
             "expose_headers": ["Authorization"],
