@@ -17,12 +17,19 @@ function TaskManager(){
     async function fetchCategories(){
         try {
             const response=await fetch('https://taskhub-server.onrender.com/categories', {
-                credentials:"include"
+                method:"GET",
+                credentials:"include",
+                headers:{
+                    "Content-Type":"application/json"
+                }
             });
             if(response.ok){
                 const data=await response.json();
                 setCategories(data);
             } else {
+                if(response.status===401){
+                    console.log("User needs to login again");
+                }
                 const errorData=await response.json();
                 console.error('Categories fetch error:', errorData);
             }
@@ -34,12 +41,19 @@ function TaskManager(){
     async function fetchTasks(){
         try{
             const response=await fetch("https://taskhub-server.onrender.com/tasks", {
-                credentials:"include"
+                method:"GET",
+                credentials:"include",
+                headers:{
+                    "Content-Type":"application/json"
+                }
             });
             if(response.ok){
                 const data=await response.json();
                 setTasks(data);
             } else {
+                if(response.status===401){
+                    console.log("User needs to login again");
+                }
                 const errorData=await response.json();
                 console.error(errorData);
             }

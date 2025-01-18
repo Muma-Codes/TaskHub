@@ -19,10 +19,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 # Local development configuration
+app.config['SESSION_COOKIE_DOMAIN'] = 'taskhub-server.onrender.com'
 app.config['SESSION_COOKIE_SECURE'] = True  # Set to True on production
-app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # CSRF protection
-app.config['SESSION_COOKIE_DOMAIN'] = '.onrender.com'
+app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access
 
 app.secret_key=os.getenv('SECRET_KEY')
 db.init_app(app)
@@ -36,7 +36,6 @@ CORS(
             "origins": ["https://taskhub-gwdw.onrender.com"],  #Should match your frontend URL
             "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"],
-            "expose_headers": ["Authorization"],
             "supports_credentials": True,
             "allow_credentials": True  
 
@@ -60,20 +59,6 @@ class UserResource(Resource):
 
 api.add_resource(UserResource, '/users')
 
-class SingleUser(Resource):
-    def get(self, id):
-        return User.get_user(id)
-
-    def patch(self, id):
-        data=request.get_json()
-        name=data.get('name')
-        password=data.get('password')
-        return User.update_user(id, name, password)
-
-    def delete(self, id):
-        return User.delete_user(id)
-
-api.add_resource(SingleUser, '/user/<int:id>')
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -136,6 +121,23 @@ def login_required(f):
         kwargs['current_user']=user
         return f(*args, **kwargs)
     return decorated_function
+
+
+class SingleUser(Resource):
+    def get(self, id):
+        return User.get_user(id)
+
+    def patch(self, id):
+        data=request.get_json()
+        name=data.get('name')
+        password=data.get('password')
+        return User.update_user(id, name, password)
+
+    def delete(self, id):
+        return User.delete_user(id)
+
+api.add_resource(SingleUser, '/user/<int:id>')
+
 
 class TaskResource(Resource):
     @login_required
