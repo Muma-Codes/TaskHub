@@ -20,6 +20,16 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 migrate=Migrate(app, db)
 app.secret_key=os.getenv('SECRET_KEY')
+
+# Local development configuration
+app.config['SESSION_COOKIE_SECURE'] = True  # Set to True on production
+app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # CSRF protection
+app.config['SESSION_COOKIE_DOMAIN'] = '.onrender.com'
+
+db.init_app(app)
+api=Api(app)
+
 CORS(
     app,
     resources={
@@ -34,16 +44,8 @@ CORS(
         }
     },
     supports_credentials=True)
-db.init_app(app)
-api=Api(app)
 
 
-
-# Local development configuration
-app.config['SESSION_COOKIE_SECURE'] = True  # Set to True on production
-app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access
-app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # CSRF protection
-app.config['SESSION_COOKIE_DOMAIN'] = '.onrender.com'
 
 class UserResource(Resource):
     def post(self):
@@ -94,8 +96,11 @@ def login():
             'error':'Invalid credentials'
         }, 401
 
+    session.clear() #clear any existing session
+
     session['user_id']=user.id
-    return user.to_dict(), 200
+    response=make_response(user.to_dict())
+    return response, 200
 
 @app.route('/check_session', methods=['GET'])
 def check_session():
