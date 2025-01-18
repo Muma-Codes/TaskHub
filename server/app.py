@@ -18,17 +18,16 @@ app.config['SQLALCHEMY_DATABASE_URI']=os.getenv('database_url')  #store the data
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
-migrate=Migrate(app, db)
-app.secret_key=os.getenv('SECRET_KEY')
-
 # Local development configuration
 app.config['SESSION_COOKIE_SECURE'] = True  # Set to True on production
 app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # CSRF protection
 app.config['SESSION_COOKIE_DOMAIN'] = '.onrender.com'
 
+app.secret_key=os.getenv('SECRET_KEY')
 db.init_app(app)
-api=Api(app)
+migrate=Migrate(app, db)
+
 
 CORS(
     app,
@@ -45,6 +44,7 @@ CORS(
     },
     supports_credentials=True)
 
+api=Api(app)
 
 
 class UserResource(Resource):
