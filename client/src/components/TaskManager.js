@@ -22,7 +22,10 @@ function TaskManager(){
             if(response.ok){
                 const data=await response.json();
                 setCategories(data);
-            } 
+            } else {
+                const errorData=await response.json();
+                console.error('Categories fetch error:', errorData);
+            }
         } catch (error){
             console.error(error.statusText);
         }

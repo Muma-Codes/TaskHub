@@ -28,7 +28,9 @@ CORS(
             "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"],
             "expose_headers": ["Authorization"],
-            "supports_credentials": True
+            "supports_credentials": True,
+            "allow_credentials": True  
+
         }
     },
     supports_credentials=True)
@@ -40,7 +42,8 @@ api=Api(app)
 # Local development configuration
 app.config['SESSION_COOKIE_SECURE'] = True  # Set to True on production
 app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # CSRF protection
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # CSRF protection
+app.config['SESSION_COOKIE_DOMAIN'] = '.onrender.com'
 
 class UserResource(Resource):
     def post(self):
