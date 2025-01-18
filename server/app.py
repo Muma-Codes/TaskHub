@@ -21,7 +21,7 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 # Local development configuration
 app.config['SESSION_COOKIE_DOMAIN'] = 'taskhub-server.onrender.com'   # Make sure this matches your API domain
 app.config['SESSION_COOKIE_SECURE'] = True  # Set to True on production
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # CSRF protection
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # CSRF protection
 app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access
 
 app.secret_key=os.getenv('SECRET_KEY')
