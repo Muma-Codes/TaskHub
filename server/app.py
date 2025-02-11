@@ -15,6 +15,7 @@ load_dotenv()
 app=Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI']=os.getenv('database_url')  #store the database url in .env
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
